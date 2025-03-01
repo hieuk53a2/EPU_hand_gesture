@@ -2,4 +2,4 @@
 Method 1:
 ![alt text](early.png)
 Method 2:
-![alt text](late.png)
+![alt text](late_fusion.png)
