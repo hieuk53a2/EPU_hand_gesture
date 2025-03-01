@@ -1,0 +1,5 @@
+DATA_DIR = "data"
+BATCH_SIZE = 2
+LR = 0.001
+EPOCHS = 10
+WEIGHT_DECAY = 1e-4
