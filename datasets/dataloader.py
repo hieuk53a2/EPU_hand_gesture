@@ -16,9 +16,10 @@ class MultiInputDataset(Dataset):
             class_path = os.path.join(root_dir, class_dir)
             if os.path.isdir(class_path):  # Ensure it's a folder
                 for file in sorted(os.listdir(class_path)):
-                    if file.endswith(".jpg"):
+                    if file.endswith(".png"):
+                        file_name = file.split("_")[0]+".csv"
                         img_path = os.path.join(class_path, file)
-                        csv_path = img_path.replace(".jpg", ".csv")
+                        csv_path = os.path.join(class_path, file_name)
                         if os.path.exists(csv_path):  # Ensure CSV exists
                             self.data.append((img_path, csv_path, label))
 
@@ -27,7 +28,7 @@ class MultiInputDataset(Dataset):
 
     def __getitem__(self, idx):
         img_path, csv_path, label = self.data[idx]
-
+        # print(img_path, csv_path, label)
         # Load Image
         image = Image.open(img_path).convert("RGB")
         if self.transform:
@@ -51,10 +52,10 @@ def get_dataloaders(data_dir, batch_size=32):
         transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
     ])
 
-    train_dataset = MultiInputDataset(f'{data_dir}/train', transform=transform)
+    train_dataset = MultiInputDataset(os.path.join(data_dir, 'train'), transform=transform)
     train_dataloader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True)
 
-    val_dataset = MultiInputDataset(f'{data_dir}/val', transform=transform)
+    val_dataset = MultiInputDataset(os.path.join(data_dir, 'val'), transform=transform)
     val_dataloader = DataLoader(val_dataset, batch_size=batch_size, shuffle=True)
 
     # get number of classes
